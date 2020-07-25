@@ -18,13 +18,11 @@ function [z,u] = stationaer_lin(s,N)
     % Spaltenvektor von 0 bis d, in h stepsize
     z(:,1) = 0:h:c.d;
     
+    %
     sz = s(z);
-    % Rationale behind multiplication - see finite_differenzen.mlx,
-    % Aufgabe 2.1, II. Schritt, a) Diskretisierung der inneren Stützpunkten
-    sz_lgs = (-1/c.D) * sz;
 
     A = fd_lin_matrix(N);
     
-    u = A \ sz_lgs;
+    u = A \ sz;
     
 end

@@ -2,7 +2,7 @@ function sz = s_lin(z)
     
     global c;
 
-    k = c.k_1 + c.k_2*c.N_D;
+    k = (c.k_1 + c.k_2*c.N_D);
     
     sz(:,1) = 1:length(z);
 
