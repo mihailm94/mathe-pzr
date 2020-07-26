@@ -4,12 +4,16 @@
 % Ausgabe:
 %   J   Jacobi-Matrix DF(u) der Groesse (N + 1) × (N + 1) als sparse matrix.
 %
-function J = fd_nonlin_jac_4(t, u, N)
+function J = fd_nonlin_jac_4(t, u)
     
     global c;
-        
+    
+    % TODO
+    
     % Stepsize
-    h = c.d / N;
+    h = c.d / length(u);
+    
+    N = t(1):h.c:t(2);
     
     % Temporary matrix, used for spdiags later
     J_temp = zeros(N + 1, N + 1);
