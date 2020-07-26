@@ -8,12 +8,11 @@ function J = fd_nonlin_jac_4(t, u)
     
     global c;
     
-    % TODO
-    
+    N = length(u);
     % Stepsize
-    h = c.d / length(u);
+    h = c.d / N;
     
-    N = t(1):h.c:t(2);
+    N = N - 1;
     
     % Temporary matrix, used for spdiags later
     J_temp = zeros(N + 1, N + 1);

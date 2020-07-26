@@ -30,31 +30,19 @@
 function [x, fval, exitflag] = newton(f, x0, tol, nmax)
     
     exitflag = 0;
-    x_temp = zeros( length(x0), nmax + 1);
-    delta = zeros( length(x0), nmax - 1 );
-    % Erster Newton Schritt
-    x_temp(:,1) = x0;
-    [y, dy] = f( x_temp(:,1) );
-    
-    for iter = 2:(nmax + 1)
-        % Df(x(n))*δ(n) = −f(x(n)) ; LGS A*δ = B
-        delta(:, iter - 1) = (dy \ -y);
-        x_temp(:, iter) = x_temp(:, iter - 1) + delta(:, iter - 1);
-        [y, dy] = f( x_temp(:,iter) );
-        
-        % || f(x_k) ||
-        dist_f = norm( y );
-        % || x_k - x_(k-1) ||
-        dist_x_k = norm( (x_temp(:,iter) - x_temp(:,iter - 1)) ); 
-        
-        x = x_temp(:, iter);
-        fval = y;
-
-        % || f(x_k) || + || x_k - x_(k-1) || < tol
-        if ((dist_f + dist_x_k) < tol)
+    m = length(x0);
+    x_inter = zeros(m, nmax + 1);
+    x_inter(:,1) = x0;
+    delta = zeros(m, nmax-1);
+    [fval,J] = f(x_inter(:,1));
+    for i = 2 : nmax+1
+        delta(:,i-1) = J\-fval;
+        x_inter(:,i) = x_inter(:,i-1) + delta(:,i-1);
+        [fval,J] = f(x_inter(:,i));
+        x = x_inter(:,i);
+        if(norm(fval) + norm(x_inter(:,i) - x_inter(:,i-1)) < tol)
             exitflag = 1;
             break;
         end
-
     end
 end
