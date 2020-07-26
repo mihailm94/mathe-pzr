@@ -27,22 +27,32 @@
 % 	exitflag Rückgabewert 1 falls Iteration Toleranzbedingung erfüllt hat 
 %            ansonsten 0
 %
-function [x, fval, exitflag] = newton(f, x0, tol, nmax)
-    
-    exitflag = 0;
-    m = length(x0);
-    x_inter = zeros(m, nmax + 1);
-    x_inter(:,1) = x0;
-    delta = zeros(m, nmax-1);
-    [fval,J] = f(x_inter(:,1));
-    for i = 2 : nmax+1
-        delta(:,i-1) = J\-fval;
-        x_inter(:,i) = x_inter(:,i-1) + delta(:,i-1);
-        [fval,J] = f(x_inter(:,i));
-        x = x_inter(:,i);
-        if(norm(fval) + norm(x_inter(:,i) - x_inter(:,i-1)) < tol)
-            exitflag = 1;
-            break;
+function [x, fval, exitflag] = newton(f, x0, tol, nmax)  
+ 
+     exitflag = 0;
+     
+     x = zeros (length(x0),nmax);
+     x(:,1)= x0(:);     [fx,Jx] = feval(f,x(:,1));
+     x(:,2) = x0 - Jx\fx;
+     
+     [t,Jx] = feval(f,x(:,2));
+     if (norm(t)+norm(x(:,2)-x(:,1)) < tol)
+            exitflag=1;
+     end
+     
+     for i=2:nmax+1
+        [fx,Jx] = feval(f,x(:,i));
+        if (norm(fx)+norm(x(:,i)-x(:,i-1)) < tol)
+            exitflag=1;
+
+             x=x(:,i);
+             fval = fx;
+            return
         end
+        x(:,i+1) = x(:,i) - Jx\fx;
     end
+
+fval = fx;
+x=x(:,nmax+1);
 end
+   
